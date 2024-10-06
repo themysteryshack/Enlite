@@ -1,4 +1,6 @@
 youtube-transcript-api
 argparse
-openai
+anthropic
+requests
+flask
 re

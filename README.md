@@ -1,4 +1,4 @@
-# VidLearn
+# Enlite
 Educational tool which tests comprehension of video-based lessons 
 
 ## Features

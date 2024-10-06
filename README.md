@@ -3,8 +3,8 @@ Educational tool which tests comprehension of video-based lessons
 
 ## Features
 
-- Fetches YouTube video transcripts.
-- Generates comprehension questions based on the transcript
+- Fetches lesson transcripts 
+- Generates comprehension questions based on video transcripts
 - Generates comprehension score using Jaccard similarity 
 
 ## Requirements

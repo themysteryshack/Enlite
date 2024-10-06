@@ -1,10 +1,15 @@
+#! /usr/bin/env python3
 
 from youtube_transcript_api import YouTubeTranscriptApi
 import re
 import openai
+import argparse
+from pdb import set_trace as bp
 
 # TODO: implement accuracy check, generate score
 # TODO: generate new worksheet based on score
+
+openai.api_key = '' 
 
 def get_video_id(youtube_url):
     # Extract the video ID from the YouTube URL
@@ -37,32 +42,43 @@ def generate_questions(transcript):
         "Questions:\n"
     )
 
-    openai.api_key = 'your_openai_api_key_here'  # Replace with your OpenAI API key
-
-    response = openai.Completion.create(
-        engine="davinci",
-        prompt=prompt,
+    
+    response = openai.ChatCompletion.create(
+        model="gpt-4o-2024-08-06",  # Specify the model to use
+        messages=[
+            {"role": "user", "content": prompt}  # Replace 'prompt' with your input
+        ],
         max_tokens=150,
-        n=1,
-        stop=None,
         temperature=0.5
     )
 
     questions = response.choices[0].text.strip()
     return questions
 
-def main(youtube_url):
-    #Input test URl to command line 
-    parser = argparse.ArgumentParser(description='Generate worksheet questions from a YouTube video transcript.')
-    parser.add_argument('youtube_url', type=str, help='The URL of the YouTube video')
-    args = parser.parse_args()
+def main():
 
-    youtube_url = args.youtube_url
-    transcript = get_transcript(youtube_url)
-    if "Error" in transcript:
-        print(transcript)
-        return
+    youtube_url = 'https://www.youtube.com/watch?v=m65RS5NFlf4'
+    
+    """   
+    # Prompt the user for the YouTube URL  
+    try:
+        youtube_url = input("Input YouTube URL: ")
+        # Ensure the URL is valid (you can add further validation here)
+        if not youtube_url.startswith("https://www.youtube.com/watch?v="):
+            print("Invalid YouTube URL format.")
+            return
+    except Exception as e:  # Catch any exception
+        print(f"Error: {e}. Please try again.")
+        return 
+    """
 
-    questions = generate_questions(transcript)
+    transcript = get_transcript(youtube_url)  # Fetch the transcript
+    print(transcript)  
+
+    questions = generate_questions(transcript)  # Generate questions from the transcript
     print("Generated Worksheet Questions:")
-    print(questions)
+    for question in questions:
+        print(question)
+
+if __name__=="__main__":
+    main()
